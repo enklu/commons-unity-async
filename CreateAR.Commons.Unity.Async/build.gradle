@@ -1,5 +1,5 @@
 def csc = System.getenv("CSC") ?: cscPath
-def projName = 'CreateAR.Commons.Unity.Storage'
+def projName = 'CreateAR.Commons.Unity.Async'
 def csproj = "${projName}.csproj"
 def nupkg = "bin/Debug/${projName}.nupkg"
 
