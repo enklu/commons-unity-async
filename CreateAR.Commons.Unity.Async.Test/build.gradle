@@ -1,0 +1,29 @@
+def csc = System.getenv("CSC") ?: cscPath
+def projName = 'CreateAR.Commons.Unity.Storage'
+def csproj = "${projName}.Test.csproj"
+def nupkg = "bin/Debug/${projName}.Test.nupkg"
+
+task clean(type:Exec) {
+        executable csc
+        args csproj, '/target:Clean'
+}
+
+task restore(type:Exec) {
+        executable 'nuget'
+        args 'restore', csproj
+}
+
+task build(type:Exec, dependsOn:restore) {
+        executable csc
+        args csproj, '/target:Clean;Rebuild'
+}
+
+task pack(type:Exec, dependsOn: build) {
+        executable csc
+        args '/t:pack', csproj
+}
+
+task upload(type:Exec, dependsOn:pack) {
+        executable 'nuget'
+        args 'push', '-Source', 'Nexus', nupkg
+}
