@@ -16,7 +16,7 @@ namespace CreateAR.Commons.Unity.Async
         {
             var called = false;
             var failureCalled = false;
-
+            
             new AsyncToken<TestResult>(new TestResult())
                 .OnSuccess(_ => called = true)
                 .OnFailure(_ => failureCalled = true);
