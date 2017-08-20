@@ -73,6 +73,32 @@ namespace CreateAR.Commons.Unity.Async
         private readonly List<Action<IAsyncToken<T>>> _onFinallyCallbacks = new List<Action<IAsyncToken<T>>>();
         private readonly List<Exception> _scratchExceptions = new List<Exception>();
 
+        /// <summary>
+        /// Creates a token with no resolution.
+        /// </summary>
+        public AsyncToken()
+        {
+            
+        }
+
+        /// <summary>
+        /// Creates a successful token.
+        /// </summary>
+        /// <param name="value">The value to resolve with.</param>
+        public AsyncToken(T value)
+        {
+            Succeed(value);
+        }
+
+        /// <summary>
+        /// Creates a failed token.
+        /// </summary>
+        /// <param name="exception">The exception to fail with.</param>
+        public AsyncToken(Exception exception)
+        {
+            Fail(exception);
+        }
+
         /// <inheritdoc cref="IAsyncToken{T}"/>
         public IAsyncToken<T> OnSuccess(Action<T> callback)
         {

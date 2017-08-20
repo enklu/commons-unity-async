@@ -5,10 +5,11 @@
     <AssemblyName>CreateAR.Commons.Unity.Async</AssemblyName>
     <RootNamespace>CreateAR.Commons.Unity.Async</RootNamespace>
     <AssemblyVersion>0.1.0</AssemblyVersion>
-    <Version>0.1.0</Version>
-    <Description>TODO</Description>
+    <Version>0.2.1</Version>
+    <Description>Provides primitives for working asynchronously.</Description>
     <Copyright>Copyright © 2017 CreateAR</Copyright>
     <Authors>CreateAR</Authors>
     <IncludeSymbols>True</IncludeSymbols>
+    <PackageReleaseNotes>Added constructor resolutions.</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
