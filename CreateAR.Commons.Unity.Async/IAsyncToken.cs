@@ -36,5 +36,11 @@ namespace CreateAR.Commons.Unity.Async
         /// </summary>
         /// <returns></returns>
         IAsyncToken<T> Abort();
+
+        /// <summary>
+        /// Creates a new token that is chained to this token.
+        /// </summary>
+        /// <returns></returns>
+        IAsyncToken<T> Token();
     }
 }

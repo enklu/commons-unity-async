@@ -176,6 +176,17 @@ namespace CreateAR.Commons.Unity.Async
             return this;
         }
 
+        /// <inheritdoc cref="IAsyncToken{T}"/>
+        public IAsyncToken<T> Token()
+        {
+            var token = new AsyncToken<T>();
+
+            OnSuccess(token.Succeed);
+            OnFailure(token.Fail);
+
+            return token;
+        }
+
         /// <summary>
         /// Provides a resolution for the token, which calls OnSuccess callbacks,
         /// follows by OnFinally callbacks.

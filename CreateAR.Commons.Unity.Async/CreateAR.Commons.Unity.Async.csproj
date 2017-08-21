@@ -4,12 +4,13 @@
     <TargetFramework>net35</TargetFramework>
     <AssemblyName>CreateAR.Commons.Unity.Async</AssemblyName>
     <RootNamespace>CreateAR.Commons.Unity.Async</RootNamespace>
-    <AssemblyVersion>0.1.0</AssemblyVersion>
-    <Version>0.2.2</Version>
+    <AssemblyVersion>0.3.0</AssemblyVersion>
+    <Version>0.3.0</Version>
     <Description>Provides primitives for working asynchronously.</Description>
     <Copyright>Copyright © 2017 CreateAR</Copyright>
     <Authors>CreateAR</Authors>
     <IncludeSymbols>True</IncludeSymbols>
     <PackageReleaseNotes>Added constructor resolutions.</PackageReleaseNotes>
+    <FileVersion>0.3.0</FileVersion>
   </PropertyGroup>
 </Project>

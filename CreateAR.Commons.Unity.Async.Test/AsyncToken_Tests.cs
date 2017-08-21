@@ -393,5 +393,20 @@ namespace CreateAR.Commons.Unity.Async
 
             Assert.IsTrue(called);
         }
+
+        [Test]
+        public void Token()
+        {
+            var token = new AsyncToken<TestResult>();
+            var successCalled = true;
+            
+            token
+                .Token()
+                .OnSuccess(_ => successCalled = true);
+
+            token.Succeed(new TestResult());
+
+            Assert.IsTrue(successCalled);
+        }
     }
 }
