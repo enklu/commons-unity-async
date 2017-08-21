@@ -13,4 +13,8 @@
     <PackageReleaseNotes>Added constructor resolutions.</PackageReleaseNotes>
     <FileVersion>0.3.0</FileVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
 </Project>
