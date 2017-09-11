@@ -1,0 +1,21 @@
+def projName = 'CreateAR.Commons.Unity.Async.Test'
+def csproj = "${projName}.csproj"
+
+task clean(type:Delete) {
+    delete 'bin'
+}
+
+task restore(type:Exec) {
+    executable nugetAbsPath
+    args 'restore', csproj
+}
+
+task build(type:Exec, dependsOn:['restore']) {
+    executable cscPath
+    args csproj, '/target:Rebuild'
+}
+
+task test(type:Exec, dependsOn: build) {
+    executable nunitConsolePath
+	args "bin/Debug/net35/${projName}.dll"
+}

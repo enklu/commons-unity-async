@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net35</TargetFrameworks>
     <RootNamespace>CreateAR.Commons.Unity.Async</RootNamespace>
-    <AssemblyName>CreateAR.Commons.Unity.Async.Tests</AssemblyName>
+    <AssemblyName>CreateAR.Commons.Unity.Async.Test</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
