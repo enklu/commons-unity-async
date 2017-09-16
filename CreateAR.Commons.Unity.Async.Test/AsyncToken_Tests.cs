@@ -327,9 +327,9 @@ namespace CreateAR.Commons.Unity.Async
                     .OnSuccess(_ => called = true);
                 token.Succeed(new TestResult());
             }
-            catch (AggregateException aggregate)
+            catch (Exception thrown)
             {
-                Assert.AreSame(exception, aggregate.Exceptions[0]);
+                Assert.AreSame(exception, thrown);
             }
 
             Assert.IsTrue(called);
@@ -349,9 +349,9 @@ namespace CreateAR.Commons.Unity.Async
                     .OnFailure(_ => called = true);
                 token.Fail(new Exception());
             }
-            catch (AggregateException aggregate)
+            catch (Exception thrown)
             {
-                Assert.AreSame(exception, aggregate.Exceptions[0]);
+                Assert.AreSame(exception, thrown);
             }
 
             Assert.IsTrue(called);
@@ -371,9 +371,33 @@ namespace CreateAR.Commons.Unity.Async
                     .OnFinally(_ => called = true);
                 token.Succeed(new TestResult());
             }
-            catch (AggregateException aggregate)
+            catch (Exception thrown)
             {
-                Assert.AreSame(exception, aggregate.Exceptions[0]);
+                Assert.AreSame(exception, thrown);
+            }
+
+            Assert.IsTrue(called);
+        }
+
+        [Test]
+        public void AggregateExceptionCreated()
+        {
+            var token = new AsyncToken<TestResult>();
+            var exception1 = new Exception();
+            var exception2 = new Exception();
+            var called = false;
+
+            try
+            {
+                token
+                    .OnSuccess(_ => throw exception1)
+                    .OnSuccess(_ => throw exception2)
+                    .OnSuccess(_ => called = true);
+                token.Succeed(new TestResult());
+            }
+            catch (AggregateException exception)
+            {
+                Assert.AreEqual(2, exception.Exceptions.Count);
             }
 
             Assert.IsTrue(called);

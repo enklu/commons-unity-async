@@ -220,15 +220,7 @@ namespace CreateAR.Commons.Unity.Async
 
             ExecuteOnFinallyCallbacks(_scratchExceptions);
 
-            if (_scratchExceptions.Count > 0)
-            {
-                var aggregateException = new AggregateException();
-                aggregateException.Exceptions.AddRange(_scratchExceptions);
-
-                _scratchExceptions.Clear();
-
-                throw aggregateException;
-            }
+            ThrowExceptions();
         }
 
         /// <summary>
@@ -264,15 +256,7 @@ namespace CreateAR.Commons.Unity.Async
 
             ExecuteOnFinallyCallbacks(_scratchExceptions);
 
-            if (_scratchExceptions.Count > 0)
-            {
-                var aggregateException = new AggregateException();
-                aggregateException.Exceptions.AddRange(_scratchExceptions);
-
-                _scratchExceptions.Clear();
-
-                throw aggregateException;
-            }
+            ThrowExceptions();
         }
 
         /// <summary>
@@ -294,6 +278,31 @@ namespace CreateAR.Commons.Unity.Async
                 }
             }
             _onFinallyCallbacks.Clear();
+        }
+
+        /// <summary>
+        /// Throws exceptions if necessary.
+        /// </summary>
+        private void ThrowExceptions()
+        {
+            var exceptionCount = _scratchExceptions.Count;
+            if (exceptionCount > 0)
+            {
+                Exception exception;
+                if (1 == exceptionCount)
+                {
+                    exception = _scratchExceptions[0];
+                }
+                else
+                {
+                    var aggregateException = new AggregateException();
+                    aggregateException.Exceptions.AddRange(_scratchExceptions);
+                    exception = aggregateException;
+                }
+
+                _scratchExceptions.Clear();
+                throw exception;
+            }
         }
     }
 }
