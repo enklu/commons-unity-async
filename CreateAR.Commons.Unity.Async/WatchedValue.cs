@@ -6,7 +6,7 @@ namespace CreateAR.Commons.Unity.Async
     /// Represents a value that can be watched.
     /// </summary>
     /// <typeparam name="T">Type of the value.</typeparam>
-    public sealed class WatchedValue<T> where T : class
+    public sealed class WatchedValue<T>
     {
         /// <summary>
         /// Internal token used to track ready state.
@@ -26,7 +26,7 @@ namespace CreateAR.Commons.Unity.Async
             get => _value;
             set
             {
-                if (_value == value)
+                if (Equals(_value, value))
                 {
                     return;
                 }
