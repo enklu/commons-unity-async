@@ -4,14 +4,14 @@
     <TargetFramework>net35</TargetFramework>
     <AssemblyName>CreateAR.Commons.Unity.Async</AssemblyName>
     <RootNamespace>CreateAR.Commons.Unity.Async</RootNamespace>
-    <AssemblyVersion>0.5.1</AssemblyVersion>
-    <Version>0.5.1</Version>
+    <AssemblyVersion>0.6.0</AssemblyVersion>
+    <Version>0.6.0</Version>
     <Description>Provides primitives for working asynchronously.</Description>
     <Copyright>Copyright © 2017 CreateAR</Copyright>
     <Authors>CreateAR</Authors>
     <IncludeSymbols>True</IncludeSymbols>
-    <PackageReleaseNotes>Remove class requirement on WatchedValue.</PackageReleaseNotes>
-    <FileVersion>0.5.1</FileVersion>
+    <PackageReleaseNotes>Added a MutableAsyncToken that can be resolved many times.</PackageReleaseNotes>
+    <FileVersion>0.6.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>full</DebugType>
