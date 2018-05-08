@@ -6,6 +6,7 @@ namespace CreateAR.Commons.Unity.Async
     /// Represents a value that can be watched.
     /// </summary>
     /// <typeparam name="T">Type of the value.</typeparam>
+    [Obsolete("Object considered dangerous. Will be removed in future release.")]
     public sealed class WatchedValue<T>
     {
         /// <summary>
@@ -70,6 +71,15 @@ namespace CreateAR.Commons.Unity.Async
         public IAsyncToken<T> Ready()
         {
             return _readyToken.Token();
+        }
+
+        /// <summary>
+        /// Called when value could not be loaded.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        public void Fail(Exception exception)
+        {
+            _readyToken.Fail(exception);
         }
     }
 }

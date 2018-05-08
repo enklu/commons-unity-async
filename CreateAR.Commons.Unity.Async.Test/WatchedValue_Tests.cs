@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Configuration;
+using NUnit.Framework;
 
 namespace CreateAR.Commons.Unity.Async
 {
@@ -170,6 +172,21 @@ namespace CreateAR.Commons.Unity.Async
 
             Assert.IsTrue(called);
             Assert.IsFalse(abortCalled);
+        }
+
+        [Test]
+        public void CallReadyError()
+        {
+            var called = false;
+
+            var watcher = new WatchedValue<TestClass>();
+            watcher
+                .Ready()
+                .OnFailure(_ => called = true);
+
+            watcher.Fail(new Exception());
+
+            Assert.IsTrue(called);
         }
     }
 }
