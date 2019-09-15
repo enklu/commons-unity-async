@@ -190,6 +190,17 @@ namespace CreateAR.Commons.Unity.Async
             return this;
         }
 
+        /// <inheritdoc cref="IAsyncToken{T}"/>
+        public IMutableAsyncToken<TR> Map<TR>(Func<T, TR> map)
+        {
+            var output = new MutableAsyncToken<TR>();
+
+            OnSuccess(value => output.Succeed(map(value)));
+            OnFailure(output.Fail);
+
+            return output;
+        }
+
         /// <summary>
         /// Provides a resolution for the token, which calls OnSuccess callbacks,
         /// follows by OnFinally callbacks.

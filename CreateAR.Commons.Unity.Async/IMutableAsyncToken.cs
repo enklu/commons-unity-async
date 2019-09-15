@@ -52,5 +52,13 @@ namespace CreateAR.Commons.Unity.Async
         /// <param name="callback">The callback to remove.</param>
         /// <returns></returns>
         IMutableAsyncToken<T> Remove(Action<IMutableAsyncToken<T>> callback);
+
+        /// <summary>
+        /// Maps a token to another token type.
+        /// </summary>
+        /// <typeparam name="TR">Result generic parameter/</typeparam>
+        /// <param name="map">Function to map between types.</param>
+        /// <returns></returns>
+        IMutableAsyncToken<TR> Map<TR>(Func<T, TR> map);
     }
 }
