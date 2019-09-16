@@ -42,5 +42,13 @@ namespace CreateAR.Commons.Unity.Async
         /// </summary>
         /// <returns></returns>
         IAsyncToken<T> Token();
+
+        /// <summary>
+        /// Maps a token to another token type.
+        /// </summary>
+        /// <typeparam name="TR">Result generic parameter/</typeparam>
+        /// <param name="map">Function to map between types.</param>
+        /// <returns></returns>
+        IAsyncToken<TR> Map<TR>(Func<T, TR> map);
     }
 }

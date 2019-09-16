@@ -4,15 +4,16 @@
     <TargetFramework>net35</TargetFramework>
     <AssemblyName>CreateAR.Commons.Unity.Async</AssemblyName>
     <RootNamespace>CreateAR.Commons.Unity.Async</RootNamespace>
-    <AssemblyVersion>0.7.0</AssemblyVersion>
-    <Version>0.7.0</Version>
+    <AssemblyVersion>0.7.1</AssemblyVersion>
+    <Version>0.7.1</Version>
     <Description>Provides primitives for working asynchronously.</Description>
     <Copyright>Copyright © 2017 CreateAR</Copyright>
     <Authors>CreateAR</Authors>
     <IncludeSymbols>True</IncludeSymbols>
-    <PackageReleaseNotes>Deprecated dangerous WatchedValue.
-Added SynchronizedObject.</PackageReleaseNotes>
-    <FileVersion>0.6.1</FileVersion>
+    <PackageReleaseNotes>Added All method to Async static class.
+Added Map to IAsyncToken.</PackageReleaseNotes>
+    <FileVersion>0.7.1</FileVersion>
+    <PackageId>CreateAR.Commons.Unity.Async</PackageId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>full</DebugType>
