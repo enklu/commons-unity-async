@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CreateAR.Commons.Unity.Async
 {
@@ -196,6 +198,27 @@ namespace CreateAR.Commons.Unity.Async
             OnFailure(output.Fail);
 
             return output;
+        }
+        
+        /// <inheritdoc cref="IAsyncToken{T}"/>
+        public Task<T> AsTask()
+        {
+            return Task.Run(() =>
+            {
+                while (!_aborted && _resolution == null) { }
+
+                if (_aborted)
+                {
+                    throw new OperationCanceledException();
+                }
+                
+                if (!_resolution.Success)
+                {
+                    throw _resolution.Exception;
+                }
+
+                return _resolution.Result;
+            });
         }
 
         /// <summary>

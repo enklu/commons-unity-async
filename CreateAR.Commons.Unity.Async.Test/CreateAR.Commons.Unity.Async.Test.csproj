@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net35</TargetFrameworks>
     <RootNamespace>CreateAR.Commons.Unity.Async</RootNamespace>
     <AssemblyName>CreateAR.Commons.Unity.Async.Test</AssemblyName>
+    <TargetFramework>net45</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace CreateAR.Commons.Unity.Async
 {
@@ -50,5 +51,12 @@ namespace CreateAR.Commons.Unity.Async
         /// <param name="map">Function to map between types.</param>
         /// <returns></returns>
         IAsyncToken<TR> Map<TR>(Func<T, TR> map);
+
+        /// <summary>
+        /// Converts the token into a task that can be awaited.
+        /// An aborted token throws an OperationCanceledException instance.
+        /// </summary>
+        /// <returns></returns>
+        Task<T> AsTask();
     }
 }
