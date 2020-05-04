@@ -5,7 +5,7 @@
     <AssemblyName>CreateAR.Commons.Unity.Async</AssemblyName>
     <RootNamespace>CreateAR.Commons.Unity.Async</RootNamespace>
     <AssemblyVersion>0.7.2</AssemblyVersion>
-    <Version>0.7.1</Version>
+    <Version>0.7.2</Version>
     <Description>Provides primitives for working asynchronously.</Description>
     <Copyright>Copyright © 2017 CreateAR</Copyright>
     <Authors>CreateAR</Authors>
