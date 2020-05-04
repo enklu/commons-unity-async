@@ -493,6 +493,29 @@ namespace CreateAR.Commons.Unity.Async
         }
 
         [Test]
+        public async Task TaskTimeout()
+        {
+            var token = new AsyncToken<float>();
+
+            Exception callbackException = null;
+            token.OnFailure(exception => callbackException = exception);
+            
+            var task = token.AsTask(5000);
+            var taskSuccess = false;
+            
+            try
+            {
+                await task;
+                taskSuccess = true;
+            }
+            catch (Exception exception)
+            {
+                Assert.IsTrue(exception is TimeoutException);
+            }
+            Assert.IsFalse(taskSuccess);
+        }
+
+        [Test]
         public void Token()
         {
             var token = new AsyncToken<TestResult>();

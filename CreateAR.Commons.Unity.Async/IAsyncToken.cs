@@ -57,6 +57,7 @@ namespace CreateAR.Commons.Unity.Async
         /// An aborted token throws an OperationCanceledException instance.
         /// </summary>
         /// <returns></returns>
-        Task<T> AsTask();
+        /// <param name="timeoutMs">The time to wait for the task to complete before failing.</param>
+        Task<T> AsTask(int timeoutMs = 30000);
     }
 }

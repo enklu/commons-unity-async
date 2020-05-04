@@ -201,11 +201,19 @@ namespace CreateAR.Commons.Unity.Async
         }
         
         /// <inheritdoc cref="IAsyncToken{T}"/>
-        public Task<T> AsTask()
+        public Task<T> AsTask(int timeoutMs = 30000)
         {
             return Task.Run(() =>
             {
-                while (!_aborted && _resolution == null) { }
+                var startTime = DateTime.Now;
+
+                while (!_aborted && _resolution == null)
+                {
+                    if ((DateTime.Now - startTime).TotalMilliseconds > timeoutMs)
+                    {
+                        Fail(new TimeoutException("Token task took too long to complete. Pass a larger value to AsTask(int timeoutMs) if the default timeout is too short."));
+                    }
+                }
 
                 if (_aborted)
                 {
