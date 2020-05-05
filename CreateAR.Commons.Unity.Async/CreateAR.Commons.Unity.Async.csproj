@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net35</TargetFramework>
+    <TargetFramework>net45</TargetFramework>
     <AssemblyName>CreateAR.Commons.Unity.Async</AssemblyName>
     <RootNamespace>CreateAR.Commons.Unity.Async</RootNamespace>
-    <AssemblyVersion>0.7.1</AssemblyVersion>
-    <Version>0.7.1</Version>
+    <AssemblyVersion>0.7.2</AssemblyVersion>
+    <Version>0.7.2</Version>
     <Description>Provides primitives for working asynchronously.</Description>
     <Copyright>Copyright © 2017 CreateAR</Copyright>
     <Authors>CreateAR</Authors>
     <IncludeSymbols>True</IncludeSymbols>
-    <PackageReleaseNotes>Added All method to Async static class.
-Added Map to IAsyncToken.</PackageReleaseNotes>
-    <FileVersion>0.7.1</FileVersion>
+    <PackageReleaseNotes>Added AsTask for support with async/await.</PackageReleaseNotes>
+    <FileVersion>0.7.2</FileVersion>
     <PackageId>CreateAR.Commons.Unity.Async</PackageId>
+    <PackageVersion>0.7.2</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>full</DebugType>

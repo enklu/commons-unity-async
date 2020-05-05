@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace CreateAR.Commons.Unity.Async
@@ -416,6 +417,102 @@ namespace CreateAR.Commons.Unity.Async
             token.Succeed(new TestResult());
 
             Assert.IsTrue(called);
+        }
+
+        [Test]
+        public async Task TaskSuccess()
+        {
+            var token = new AsyncToken<float>();
+
+            var callbackResult = 0f;
+            token.OnSuccess(val => callbackResult = val);
+
+            var taskResult = 0f;
+            var task = token
+                .AsTask()
+                .ContinueWith(cTask =>
+                {
+                    taskResult = cTask.Result;
+                });
+
+            var expectedValue = 2.26f;
+            
+            token.Succeed(expectedValue);
+            await task;
+            
+            Assert.AreEqual(expectedValue, callbackResult);
+            Assert.AreEqual(expectedValue, taskResult);
+        }
+        
+        [Test]
+        public async Task TaskFail()
+        {
+            var token = new AsyncToken<float>();
+
+            Exception callbackException = null;
+            token.OnFailure(exception => callbackException = exception);
+            
+            var task = token.AsTask();
+
+            var expectedException = new InvalidOperationException("Test exception");
+            token.Fail(expectedException);
+
+            try
+            {
+                await task;
+            }
+            catch (Exception exception)
+            {
+                Assert.AreEqual(expectedException, exception);
+            }
+            Assert.AreEqual(expectedException, callbackException);
+        }
+        
+        [Test]
+        public async Task TaskAborted()
+        {
+            var token = new AsyncToken<float>();
+
+            Exception callbackException = null;
+            token.OnFailure(exception => callbackException = exception);
+            
+            var task = token.AsTask();
+            var taskSuccess = false;
+            token.Abort();
+            
+            try
+            {
+                await task;
+                taskSuccess = true;
+            }
+            catch (Exception exception)
+            {
+                Assert.IsTrue(exception is OperationCanceledException);
+            }
+            Assert.IsFalse(taskSuccess);
+        }
+
+        [Test]
+        public async Task TaskTimeout()
+        {
+            var token = new AsyncToken<float>();
+
+            Exception callbackException = null;
+            token.OnFailure(exception => callbackException = exception);
+            
+            var task = token.AsTask(5000);
+            var taskSuccess = false;
+            
+            try
+            {
+                await task;
+                taskSuccess = true;
+            }
+            catch (Exception exception)
+            {
+                Assert.IsTrue(exception is TimeoutException);
+            }
+            Assert.IsFalse(taskSuccess);
         }
 
         [Test]

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CreateAR.Commons.Unity.Async
 {
@@ -196,6 +198,35 @@ namespace CreateAR.Commons.Unity.Async
             OnFailure(output.Fail);
 
             return output;
+        }
+        
+        /// <inheritdoc cref="IAsyncToken{T}"/>
+        public Task<T> AsTask(int timeoutMs = 30000)
+        {
+            return Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+
+                while (!_aborted && _resolution == null)
+                {
+                    if ((DateTime.Now - startTime).TotalMilliseconds > timeoutMs)
+                    {
+                        Fail(new TimeoutException("Token task took too long to complete. Pass a larger value to AsTask(int timeoutMs) if the default timeout is too short."));
+                    }
+                }
+
+                if (_aborted)
+                {
+                    throw new OperationCanceledException();
+                }
+                
+                if (!_resolution.Success)
+                {
+                    throw _resolution.Exception;
+                }
+
+                return _resolution.Result;
+            });
         }
 
         /// <summary>
