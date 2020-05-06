@@ -229,6 +229,41 @@ namespace CreateAR.Commons.Unity.Async
             });
         }
 
+        /// <inheritdoc cref="IAsyncToken{T}"/>
+        public Task<T> AsTask(CancellationToken cancellationToken, int timeoutMs = 30000)
+        {
+            return Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+
+                while (!_aborted && _resolution == null && !cancellationToken.IsCancellationRequested)
+                {
+                    if ((DateTime.Now - startTime).TotalMilliseconds > timeoutMs)
+                    {
+                        Fail(new TimeoutException("Token task took too long to complete. Pass a larger value to AsTask(int timeoutMs) if the default timeout is too short."));
+                    }
+                }
+
+                if (_aborted)
+                {
+                    throw new OperationCanceledException();
+                }
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    Abort();
+                    throw new OperationCanceledException();
+                }
+                
+                if (!_resolution.Success)
+                {
+                    throw _resolution.Exception;
+                }
+
+                return _resolution.Result;
+            });
+        }
+
         /// <summary>
         /// Provides a resolution for the token, which calls OnSuccess callbacks,
         /// follows by OnFinally callbacks.

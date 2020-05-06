@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
@@ -513,6 +514,45 @@ namespace CreateAR.Commons.Unity.Async
                 Assert.IsTrue(exception is TimeoutException);
             }
             Assert.IsFalse(taskSuccess);
+            
+            // Ensure the backing token fails as well.
+            Assert.IsTrue(callbackException is TimeoutException);
+        }
+        
+        [Test]
+        public async Task TaskCancelled()
+        {
+            var token = new AsyncToken<float>();
+
+            Exception callbackException = null;
+            token.OnFailure(exception => callbackException = exception);
+            
+            var cancellation = new CancellationTokenSource();
+
+            var startTime = DateTime.Now;
+            var timeoutTime = 60000;
+            var task = token.AsTask(cancellation.Token, timeoutTime);
+            var taskSuccess = false;
+
+            cancellation.Cancel();
+            
+            try
+            {
+                await task;
+                taskSuccess = true;
+            }
+            catch (Exception exception)
+            {
+                Assert.IsTrue(exception is OperationCanceledException);
+            }
+            
+            Assert.IsFalse(taskSuccess);
+            
+            // Ensure the backing token has not failed.
+            Assert.IsNull(callbackException);
+            
+            // Finally, ensure that the cancellation came from the token and not a timeout!
+            Assert.IsTrue((DateTime.Now - startTime).TotalMilliseconds <= timeoutTime);
         }
 
         [Test]
