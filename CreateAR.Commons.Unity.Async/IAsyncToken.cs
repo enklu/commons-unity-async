@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CreateAR.Commons.Unity.Async
@@ -55,9 +56,20 @@ namespace CreateAR.Commons.Unity.Async
         /// <summary>
         /// Converts the token into a task that can be awaited.
         /// An aborted token throws an OperationCanceledException instance.
+        /// A task that times out also fails the underlying token for parity.
         /// </summary>
         /// <returns></returns>
         /// <param name="timeoutMs">The time to wait for the task to complete before failing.</param>
         Task<T> AsTask(int timeoutMs = 30000);
+
+        /// <summary>
+        /// Converts the token into a task that can be awaited.
+        /// An aborted token throws an OperationCanceledException instance.
+        /// A task that is cancelled does not fail the underlying token, for parity with Abort().
+        /// </summary>
+        /// <returns></returns>
+        /// <param name="timeoutMs">The time to wait for the task to complete before failing.</param>
+        /// <param name="cancellationToken">Custom cancellation.</param>
+        Task<T> AsTask(CancellationToken cancellationToken, int timeoutMs = 30000);
     }
 }
