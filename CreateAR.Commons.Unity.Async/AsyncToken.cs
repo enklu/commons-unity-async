@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -73,7 +74,7 @@ namespace CreateAR.Commons.Unity.Async
         private readonly List<Action<T>> _onSuccessCallbacks = new List<Action<T>>();
         private readonly List<Action<Exception>> _onFailureCallbacks = new List<Action<Exception>>();
         private readonly List<Action<IAsyncToken<T>>> _onFinallyCallbacks = new List<Action<IAsyncToken<T>>>();
-        private readonly List<Exception> _scratchExceptions = new List<Exception>();
+        private readonly List<ExceptionDispatchInfo> _scratchExceptions = new List<ExceptionDispatchInfo>();
 
         /// <summary>
         /// Creates a token with no resolution.
@@ -281,7 +282,7 @@ namespace CreateAR.Commons.Unity.Async
 
             _resolved = true;
             _resolution = new Resolution(value);
-
+            
             for (int i = 0, len = _onSuccessCallbacks.Count; i < len; i++)
             {
                 try
@@ -290,11 +291,11 @@ namespace CreateAR.Commons.Unity.Async
                 }
                 catch (Exception exception)
                 {
-                    _scratchExceptions.Add(exception);
+                    _scratchExceptions.Add(ExceptionDispatchInfo.Capture(exception));
                 }
             }
             _onSuccessCallbacks.Clear();
-
+            
             ExecuteOnFinallyCallbacks(_scratchExceptions);
 
             ThrowExceptions();
@@ -326,7 +327,7 @@ namespace CreateAR.Commons.Unity.Async
                 }
                 catch (Exception caughtException)
                 {
-                    _scratchExceptions.Add(caughtException);
+                    _scratchExceptions.Add(ExceptionDispatchInfo.Capture(caughtException));
                 }
             }
             _onFailureCallbacks.Clear();
@@ -341,7 +342,7 @@ namespace CreateAR.Commons.Unity.Async
         /// list.
         /// </summary>
         /// <param name="exceptions">List to add any thrown exceptions to.</param>
-        private void ExecuteOnFinallyCallbacks(List<Exception> exceptions)
+        private void ExecuteOnFinallyCallbacks(List<ExceptionDispatchInfo> exceptions)
         {
             for (int i = 0, len = _onFinallyCallbacks.Count; i < len; i++)
             {
@@ -351,7 +352,7 @@ namespace CreateAR.Commons.Unity.Async
                 }
                 catch (Exception exception)
                 {
-                    exceptions.Add(exception);
+                    exceptions.Add(ExceptionDispatchInfo.Capture(exception));
                 }
             }
             _onFinallyCallbacks.Clear();
@@ -365,20 +366,22 @@ namespace CreateAR.Commons.Unity.Async
             var exceptionCount = _scratchExceptions.Count;
             if (exceptionCount > 0)
             {
-                Exception exception;
                 if (1 == exceptionCount)
                 {
-                    exception = _scratchExceptions[0];
+                    var exception = _scratchExceptions[0];
+                    _scratchExceptions.Clear();
+                    exception.Throw();
                 }
                 else
                 {
                     var aggregateException = new AggregateException();
-                    aggregateException.Exceptions.AddRange(_scratchExceptions);
-                    exception = aggregateException;
+                    for (int i = 0, len = _scratchExceptions.Count; i < len; i++)
+                    {
+                        aggregateException.Exceptions.Add(_scratchExceptions[i].SourceException);
+                    }
+                    _scratchExceptions.Clear();
+                    throw aggregateException;
                 }
-
-                _scratchExceptions.Clear();
-                throw exception;
             }
         }
     }
